@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Toy</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            border-radius(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            background-color: #1e1e1e;
+            padding: 20px;
+        }
+        .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        /* Glassmorphism effect */
+        .card {
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border-radius(10px);
+            overflow: hidden;
+            background-color: #1e1e1e;
+            transition: transform 0.2s;
+        }
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background-color: #121212;
+            border-radius(10px 10px 0 0);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Snake game styles */
+        #game-container {
+            width: 100%;
+            height: 80vh;
+            background-color: #242424;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .snake, .food {
+            position: absolute;
+            border-radius(50%);
+            transition: transform 0.2s;
+        }
+        .snake {
+            width: 20px;
+            height: 20px;
+            background-color: #00ff00;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .food {
+            width: 10px;
+            height: 10px;
+            background-color: #ff0000;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Interactive Snake Game</h1>
+        <div id="game-container" class="card">
+            <div class="snake"></div>
+            <div class="food"></div>
+        </div>
+    </div>
+
+    <script>
+        const snake = document.querySelector('.snake');
+        const food = document.querySelector('.food');
+        let x = 50;
+        let y = 50;
+        let dx = 0;
+        let dy = 0;
+
+        function move() {
+            if (dx === 1 && x + 20 <= 100) x += 10;
+            if (dx === -1 && x >= 0) x -= 10;
+            if (dy === 1 && y + 20 <= 80) y += 10;
+            if (dy === -1 && y >= 0) y -= 10;
+
+            snake.style.left = `${x}px`;
+            snake.style.top = `${y}px`;
+
+            setTimeout(() => {
+                if (x === food.offsetLeft && y === food.offsetTop) {
+                    food.style.display = 'none';
+                    dx = Math.floor(Math.random() * 2) - 1;
+                    dy = Math.floor(Math.random() * 2) - 1;
+                } else {
+                    dx = Math.floor(Math.random() * 2) - 1;
+                    dy = Math.floor(Math.random() * 2) - 1;
+                }
+            }, 100);
+        }
+
+        setInterval(move, 100);
+
+    </script>
+</body>
+</html>
